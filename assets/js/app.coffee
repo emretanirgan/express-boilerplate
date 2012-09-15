@@ -160,7 +160,9 @@ app.add_module 'three_test', ->
             countdown = 100
 
         #Food dropping
-        if (personOne.dropOffPos = personOne.position.x)
+        #console.log(personOne.dropOffPos)
+        #console.log(personOne.position.x)
+        if (personOne.position.x == personOne.dropOffPos)
             console.log('Im here!')
             toast = new Food
                 x: personOne.x, y:0, z:0
