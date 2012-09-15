@@ -6,6 +6,7 @@ Squirrel = function( params ) {
 Squirrel.prototype = clone(GameObject.prototype);
 Squirrel.prototype.constructor = Squirrel;
 
+Squirrel.prototype.invincible = false;
 Squirrel.prototype.hunger = 50;
 Squirrel.prototype.lives = 3;
 Squirrel.prototype.intersected = false;
@@ -15,7 +16,7 @@ Squirrel.prototype.jump = function(){
     this.velocity.y = 30;
     }
     this.jumps++;
-    console.log('one')
+    //console.log('one')
 }
 Squirrel.prototype.move = function() {
 		if (!this.intersected){
