@@ -46,12 +46,12 @@ app.add_module 'three_test', ->
         mesh.rotation.y += 0.02
 
         #test intersection
-        #jean.intersected = false
-        #direction = jean.intersectPlatform game
-        #console.log( direction )
-        #if ( direction == 'DOWN' || direction == 'MIDDLE')
-            #jean.velocity.y = 0
-            #jean.intersected = true
+        jean.intersected = false
+        direction = jean.intersectPlatform game
+        console.log( direction )
+        if ( direction == 'DOWN' || direction == 'MIDDLE')
+            jean.velocity.y = 0
+            jean.intersected = true
 
         #test objects moving
         do game.move
