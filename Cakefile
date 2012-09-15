@@ -85,9 +85,6 @@ task 'go', 'Start dev server/compilation', ->
   coffee = spawn_with_stdout 'coffee' , ['-c', '-b', '-w', '-o', 'app', 'src']
   log 'Watching coffee files', green
 
-  do run_redis
-  log "Redis is running", green
-
   # watch_js
   spawn_with_stdout 'node', ['./node_modules/supervisor/lib/cli-wrapper.js','-w','app,views', '-e', 'js|jade', 'server']
 

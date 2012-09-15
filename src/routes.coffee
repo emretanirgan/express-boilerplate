@@ -12,7 +12,6 @@ module.exports = (app) ->
     app.get '/hello/:name', (req, res) -> 
         res.send "Hello #{req.params.name}"
 
-    {set, get} = require './persist'
     app.get '/set/:key/:val', (req, res) ->
         set req.params.key, req.params.val
         res.send 'OKAY'
