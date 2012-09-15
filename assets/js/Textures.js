@@ -1,3 +1,3 @@
 Textures = {
-	'squirrel' : {src:'images/squirrelimg', map:undefined},
+	//'squirrel' : {src:'img/squirrelimg.png', map:undefined},
 }
