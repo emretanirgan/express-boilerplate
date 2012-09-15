@@ -20,6 +20,44 @@ GameObject.prototype = {
 		this.bounds.y += this.velocity.y;
 		this.bounds.z += this.velocity.x;
 		this.bounds.w += this.velocity.y;
+	},
+	
+	intersect : function( object ) {
+		
+		if (this.bounds.z + this.velocity.x<object.bounds.x + object.velocity.x||
+			this.bounds.w + this.velocity.y>object.bounds.y + object.velocity.y||
+			this.bounds.x + this.velocity.x>object.bounds.z + object.velocity.x||
+			this.bounds.y + this.velocity.y<object.bounds.w + object.velocity.y) {
+			return 'NONE';
+		} else if ( this.bounds.z < object.bounds.x && this.bounds.z + this.velocity.x >= object.bounds.x + object.velocity.x ) {
+			return 'RIGHT';
+		} else if ( this.bounds.w > object.bounds.y && this.bounds.w + this.velocity.y <= object.bounds.y + object.velocity.y ){
+			return 'DOWN';
+		} else if ( this.bounds.x > object.bounds.z && this.bounds.x + this.velocity.x <= object.bounds.z + object.velocity.x ){
+			return 'LEFT';
+		} else if ( this.bounds.y < object.bounds.w && this.bounds.y + this.velocity.y >= object.bounds.w + object.velocity.y ){
+			return 'TOP';
+		} else {
+			return 'MIDDLE';
+		}
+
+		/*var dx = object.position.x + object.size.x / 2 - ( this.position.x + this.size.x / 2 );
+		var dy = object.position.y + object.size.y / 2 - ( this.position.y + this.size.y / 2 );
+		var theta = Math.atan( dx, dy );
+		var disTheta = Math.atan( this.size.x, this.size.y );
+
+		if ( -disTheta <= theta && theta <= disTheta ) {
+			return 'RIGHT';
+		}
+		if ( disTheta <= theta && theta <= Math.PI - disTheta ) {
+			return 'DOWN';
+		}
+		if ( Math.PI - disTheta <= theta || theta <= disTheta - Math.PI ) {
+			return 'LEFT';
+		}
+		if ( disTheta - Math.PI <= theta && theta <= disTheta ) {
+			return 'UP';
+		}*/
 	}
 }
 
