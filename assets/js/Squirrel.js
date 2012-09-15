@@ -18,6 +18,17 @@ Squirrel.prototype.jump = function(){
     this.jumps++;
     //console.log('one')
 }
+Squirrel.prototype.moveRight = function(){
+    this.velocity.x = 12;
+    this.mesh.rotation.y = 0;
+    //console.log('one')
+}
+Squirrel.prototype.moveLeft = function(){
+    this.velocity.x = -12;
+    this.mesh.rotation.y = Math.PI;
+
+    //console.log('one')
+}
 Squirrel.prototype.move = function() {
 		if (!this.intersected){
 			this.velocity.y -= 1;

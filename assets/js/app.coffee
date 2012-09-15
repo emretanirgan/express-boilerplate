@@ -34,8 +34,8 @@ app.add_module 'three_test', ->
     jean = new Squirrel
         x: 0, y: 500, z: 0
         vx: 0, vy: 0, vz: 0
-        w: 200, h: 200
-        map:THREE.ImageUtils.loadTexture '../img/squirrelimg.png'
+        w: 200*1.42604501608, h: 200
+        map: THREE.ImageUtils.loadTexture '/img/squirrelimg.png'
 
     hotDog = new Food
         x: 600, y:0, z:0
@@ -61,6 +61,10 @@ app.add_module 'three_test', ->
     scene.add hungerLevel.mesh
     scene.add meanRat.mesh
 
+    light = new THREE.PointLight( 0xFFFFFF, 1, 0);
+    light.position.z = 2000;
+    scene.add(light);
+
 
     geometry = new THREE.CubeGeometry 200, 200, 200
     material = new THREE.MeshBasicMaterial
@@ -70,7 +74,7 @@ app.add_module 'three_test', ->
     mesh = new THREE.Mesh geometry, material
     scene.add mesh
    
-    renderer = new THREE.CanvasRenderer()
+    renderer = new THREE.WebGLRenderer()
     renderer.setSize window.innerWidth, window.innerHeight
 
     document.body.appendChild renderer.domElement
