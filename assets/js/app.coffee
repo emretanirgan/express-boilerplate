@@ -14,6 +14,8 @@ app.add_module 'three_test', ->
         vx: 2, vy: 0, vz: 0
         w: 200, h: 600
 
+    console.log(personOne.dropOffPos);
+
     game = new GameObject
         x: 0, y: -500, z: 0
         vx: 0, vy: 0, vz: 0
@@ -41,8 +43,13 @@ app.add_module 'three_test', ->
 
     hungerLevel = new GameObject
         x: -1000, y: 700, z:0
-        vx: 0, vvy:0, vz:0
+        vx: 0, vy:0, vz:0
         w: jean.hunger * 20, h:60
+
+    meanRat = new Rat
+        x: -500, y: -50, z: 0
+        vx: 5, vy:0, vz:0
+        w: 60, h: 100
 
     scene.add game.mesh 
     scene.add jean.mesh
@@ -51,6 +58,7 @@ app.add_module 'three_test', ->
     scene.add platformTwo.mesh
     scene.add hotDog.mesh
     scene.add hungerLevel.mesh
+    scene.add meanRat.mesh
 
 
     geometry = new THREE.CubeGeometry 200, 200, 200
@@ -102,7 +110,7 @@ app.add_module 'three_test', ->
             jean.setPosition platformTwo.bounds.y
             jean.jumps = 0;
 
-        #The eating interaction
+        #The squirrel - eating interaction
         directionEat = jean.intersect hotDog
         if ( directionEat != 'NONE' & !hotDog.isEaten)
             #console.log(directionEat)
@@ -111,6 +119,15 @@ app.add_module 'three_test', ->
             jean.hunger += 20
             console.log(jean.hunger)
 
+        if toast != undefined
+            directionToastEat = jean.intersect toast
+            if ( directionEat != 'NONE' & !toast.isEaten)
+                #console.log(directionEat)
+                toast.isEaten = true
+                scene.remove toast.mesh
+                jean.hunger += 20
+                console.log(jean.hunger)
+
         #Person - squirrel collision
         directionCrash = jean.intersect personOne
 
@@ -118,16 +135,38 @@ app.add_module 'three_test', ->
             jean.hunger -= 50
             console.log(jean.hunger)
             jean.invincible = true
+                
+        #Rat - food interaction
+        directionRatEat = meanRat.intersect hotDog
+        if ( directionRatEat != 'NONE' & !hotDog.isEaten)
+            hotDog.isEaten = true
+            scene.remove hotDog.mesh
+
+        #Rat - squirrel interaction
+        directionRatCrash = jean.intersect meanRat
+        if ( directionRatCrash != 'NONE' && !jean.invincible)
+            jean.hunger -= 20
+            console.log(jean.hunger)
+            jean.invincible = true
 
         if jean.invincible
             countdown -= 1
-            console.log('I am invincible!')
+            #console.log('I am invincible!')
         
         if countdown <= 0
             jean.invincible = false
             console.log ('Not anymore:(')
             countdown = 100
-                
+
+        #Food dropping
+        if (personOne.dropOffPos = personOne.position.x)
+            console.log('Im here!')
+            toast = new Food
+                x: personOne.x, y:0, z:0
+                vx: 0, vy:0 , vz: 0
+                w: 50, h: 50
+            scene.add toast.mesh
+
 
         #Represent hunger level as the width of the hungerLevel object
         #hungerLevel.size.x = jean.hunger * 20
@@ -139,6 +178,7 @@ app.add_module 'three_test', ->
         do game.move
         do jean.move
         do personOne.move
+        do meanRat.move
 
         renderer.render scene, camera
 
