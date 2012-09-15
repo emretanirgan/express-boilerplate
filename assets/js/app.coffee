@@ -5,6 +5,21 @@ app.add_module 'three_test', ->
 
     scene = new THREE.Scene()
 
+    #Test GameObject
+    game = new GameObject
+        x: 0, y: -500, z: 0
+        vx: 10, vy: 2, vz: 0
+        w: 500, h: 500
+
+    jean = new Squirrel
+        x: 0, y: 500, z: 0
+        vx: 10, vy: 2, vz: 0
+        w: 500, h: 500
+
+    scene.add game.mesh 
+    scene.add jean.mesh
+
+
     geometry = new THREE.CubeGeometry 200, 200, 200
     material = new THREE.MeshBasicMaterial
         color: 0xff0000
@@ -24,6 +39,10 @@ app.add_module 'three_test', ->
 
         mesh.rotation.x += 0.01
         mesh.rotation.y += 0.02
+
+        #test game.move
+        do game.move
+        do jean.move
 
         renderer.render scene, camera
 
