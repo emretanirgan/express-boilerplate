@@ -26,10 +26,10 @@
 		event.preventDefault();
 		//Right key clicked
 		if ( event.keyCode === 39 ) {
-			app.three_test.jean.velocity.x = 12;
+			app.three_test.jean.moveRight();
 		}
 		if ( event.keyCode === 37 ) {
-			app.three_test.jean.velocity.x = -12;
+			app.three_test.jean.moveLeft();
 		}
 		if ( event.keyCode === 32 ) {
 			app.three_test.jean.jump();
