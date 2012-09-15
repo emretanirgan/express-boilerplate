@@ -52,6 +52,8 @@ app.add_module 'three_test', ->
         if ( direction == 'DOWN' || direction == 'MIDDLE')
             jean.velocity.y = 0
             jean.intersected = true
+            jean.setPosition game.bounds.y
+            jean.jumps = 0;
 
         #test objects moving
         do game.move

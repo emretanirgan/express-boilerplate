@@ -9,9 +9,17 @@ Squirrel.prototype.constructor = Squirrel;
 Squirrel.prototype.hunger = 50;
 Squirrel.prototype.lives = 3;
 Squirrel.prototype.intersected = false;
+Squirrel.prototype.jumps = 0;
+Squirrel.prototype.jump = function(){
+    if(this.jumps < 4){
+    this.velocity.y = 30;
+    }
+    this.jumps++;
+    console.log('one')
+}
 Squirrel.prototype.move = function() {
 		if (!this.intersected){
-			this.velocity.y -= 2;
+			this.velocity.y -= 1;
 		}
 		this.position.addSelf(this.velocity);
 		this.mesh.position.addSelf(this.velocity);
@@ -43,3 +51,10 @@ Squirrel.prototype.intersectPlatform = function(object) {
         return 'MIDDLE';
     }
 };
+Squirrel.prototype.setPosition = function(y) {
+    this.position.y = y + this.size.y/2;
+    this.mesh.position.y = y + this.size.y/2;
+    this.bounds.y = y+this.size.y;
+    this.bounds.w = y;
+}
+

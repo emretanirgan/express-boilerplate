@@ -32,7 +32,7 @@
 			app.three_test.jean.velocity.x = -12;
 		}
 		if ( event.keyCode === 32 ) {
-			app.three_test.jean.velocity.y = 12;
+			app.three_test.jean.jump();
 		}
 	}
 
@@ -45,7 +45,7 @@
 		if ( event.keyCode === 37 ) {
 			app.three_test.jean.velocity.x = 0;
 		}
-		//if ( event.keyCode === 32 ) {
+		if ( event.keyCode === 32 ) {
 		//	app.three_test.jean.velocity.y = ;
-		//}
+		}
 	}
