@@ -5,3 +5,6 @@ Squirrel = function( params ) {
 
 Squirrel.prototype = clone(GameObject.prototype);
 Squirrel.prototype.constructor = Squirrel;
+
+Squirrel.prototype.hunger = 50;
+Squirrel.prototype.lives = 3;

@@ -40,7 +40,7 @@ app.add_module 'three_test', ->
         mesh.rotation.x += 0.01
         mesh.rotation.y += 0.02
 
-        #test game.move
+        #test objects moving
         do game.move
         do jean.move
 
