@@ -12,8 +12,8 @@ app.add_module 'three_test', ->
     countdown = 100
     people = []
     people.push new Person
-        x: -500, y:0, z: 0
-        vx: 2, vy: 0, vz: 0
+        x: 500, y:0, z: 0
+        vx: -2, vy: 0, vz: 0
         w: 200, h: 600
 
     platforms = []
@@ -154,7 +154,13 @@ app.add_module 'three_test', ->
         #Food dropping
             
         for peeps in people
-            if (peeps.foodNumber>0 && peeps.foodTime[peeps.foodNumber]<peeps.position.x)
+            dropNow = false
+            if (peeps.right)
+                dropNow = peeps.foodTime[peeps.foodNumber]<peeps.position.x
+            else 
+                dropNow = peeps.foodTime[peeps.foodNumber]>peeps.position.x
+            
+            if (peeps.foodNumber>0 && dropNow)
                 foodItem = new Food
                     x: peeps.position.x, y:0, z:0
                     vx:0, vy:0, vz:0
