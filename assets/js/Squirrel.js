@@ -11,11 +11,13 @@ Squirrel.prototype.hunger = 50;
 Squirrel.prototype.lives = 3;
 Squirrel.prototype.intersected = false;
 Squirrel.prototype.jumps = 0;
+Squirrel.prototype.switchedMap = true;
 Squirrel.prototype.jump = function(){
     if(this.jumps < 4){
     this.velocity.y = 30;
     }
     this.jumps++;
+    this.mesh.material.map = Textures['flyingsquirrel'].map
     //console.log('one')
 }
 Squirrel.prototype.moveRight = function(){
@@ -32,7 +34,20 @@ Squirrel.prototype.moveLeft = function(){
 Squirrel.prototype.move = function() {
 		if (!this.intersected){
 			this.velocity.y -= 1;
-		}
+            if(this.switchedMap){
+                this.mesh.material.map = Textures['flyingsquirrel'].map
+                this.mesh.scale.x*=1.2;
+                this.mesh.scale.y*=1.2;
+                this.switchedMap = false;
+            }
+		} else {
+            if(!this.switchedMap){
+                this.mesh.material.map = Textures['squirrel'].map
+                this.mesh.scale.x/=1.2;
+                this.mesh.scale.y/=1.2;
+                this.switchedMap=true;
+            }
+        }
 		this.position.addSelf(this.velocity);
 		this.mesh.position.addSelf(this.velocity);
 		this.bounds.x += this.velocity.x;

@@ -42,7 +42,8 @@ app.add_module 'three_test', ->
     hotDog = new Food
         x: 600, y:0, z:0
         vx: 0, vy:0 , vz: 0
-        w: 50, h: 50
+        w: 2.0862*50, h: 50
+        map: Textures['hotdog'].map
 
     hungerLevel = new GameObject
         x: -1000, y: 700, z:0
@@ -52,7 +53,8 @@ app.add_module 'three_test', ->
     meanRat = new Rat
         x: -500, y: -50, z: 0
         vx: 5, vy:0, vz:0
-        w: 60, h: 100
+        w: 3.23272*100, h: 100
+        map: Textures['rat'].map
 
     scene.add game.mesh 
     scene.add jean.mesh
