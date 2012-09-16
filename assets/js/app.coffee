@@ -37,7 +37,7 @@ app.add_module 'three_test', ->
         x: 0, y: 500, z: 0
         vx: 0, vy: 0, vz: 0
         w: 200*1.42604501608, h: 200
-        map: Textures['squirrel'].map
+        map: THREE.ImageUtils.loadTexture '/img/squirrelimg.png'
 
     hotDog = new Food
         x: 600, y:0, z:0
