@@ -1,7 +1,7 @@
 app.add_module 'three_test', ->
    
     camera = new THREE.PerspectiveCamera 75, window.innerWidth / window.innerHeight, 1, 10000
-    camera.position.z = 1000
+    camera.position.z = 800
 
     scene = new THREE.Scene()
 
@@ -14,24 +14,36 @@ app.add_module 'three_test', ->
     people.push new Person
         x: 500, y:0, z: 0
         vx: -2, vy: 0, vz: 0
-        w: 200, h: 600
+        w: 600*.68133, h: 600
+        map: Textures['theo1'].map
 
     platforms = []
 
     platforms.push new GameObject
-        x: 0, y: -500, z: 0
+        x: 0, y: -800, z: 0
         vx: 0, vy: 0, vz: 0
         w: 3000, h: 500
 
     platforms.push new GameObject
-        x: -1000, y: 450, z: 0
-        vx: 0, vy:0, vz:0
-        w: 400, h: 150
+        x: 0, y: 200, z: 0
+        vx: 0, vy: 0, vz: 0
+        w: 1500*1.6668, h: 1500
+        map: Textures['background'].map
+    platforms.push new GameObject
+        x: 0, y: 200, z: -500
+        vx: 0, vy: 0, vz: 0
+        w: 1500*2.7347, h: 1500
+        map: Textures['collegehall'].map
 
     platforms.push new GameObject
-        x: 700, y: 600, z: 0
+        x: -700, y: 200, z: 0
         vx: 0, vy:0, vz:0
-        w: 500, h: 150
+        w: 300, h: 150
+
+    platforms.push new GameObject
+        x: 600, y: 150, z: 0
+        vx: 0, vy:0, vz:0
+        w: 300, h: 150
 
     jean = new Squirrel
         x: 0, y: 500, z: 0
@@ -57,8 +69,8 @@ app.add_module 'three_test', ->
 
 
     for plat in platforms 
-        if plat.mesh.material.map
-            scene.add plat.mesh
+        #if plat.mesh.material.map
+        scene.add plat.mesh
 
     for peeps in people
         scene.add peeps.mesh
@@ -110,11 +122,12 @@ app.add_module 'three_test', ->
         jean.intersected = false
         for plat in platforms
             direction = jean.intersectPlatform plat
-            if ( direction == 'DOWN' || direction == 'MIDDLE')
-                jean.velocity.y = 0
-                jean.intersected = true
-                jean.setPosition plat.bounds.y
-                jean.jumps = 0;
+            if ( !plat.mesh.material.map)
+                if ( direction == 'DOWN' || direction == 'MIDDLE')
+                    jean.velocity.y = 0
+                    jean.intersected = true
+                    jean.setPosition plat.bounds.y
+                    jean.jumps = 0;
         
 
         
@@ -192,6 +205,17 @@ app.add_module 'three_test', ->
 
         for peeps in people
             do peeps.move
+            peeps.state++
+            if (peeps.state%60 == 0) 
+                peeps.mesh.material.map = peeps.maps['0']
+            else if (peeps.state%60 == 15)
+                peeps.mesh.material.map = peeps.maps['1']
+            else if (peeps.state%60 == 30)
+                peeps.mesh.material.map = peeps.maps['2']
+            else if (peeps.state%60 == 45)
+                peeps.mesh.material.map = peeps.maps['3']
+
+             
 
         for rat in rats 
             do rat.move
