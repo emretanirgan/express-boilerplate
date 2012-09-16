@@ -9,7 +9,7 @@ GameObject = function( params ) {
 	if (params.map) {
 		material.map = params.map;
 		material.color.setHex(0xFFFFFF);
-		console.log('mapped');
+		//console.log('mapped');
 		//debugger;
 	} 
 	var geom = new THREE.PlaneGeometry ( params.w, params.h,0,0 );
@@ -67,6 +67,7 @@ GameObject.prototype = {
 		}*/
 	}
 }
+
 
 clone = function( object ) {
 	function tempConstructor(){};

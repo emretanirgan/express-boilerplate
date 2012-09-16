@@ -14,8 +14,6 @@ app.add_module 'three_test', ->
         vx: 2, vy: 0, vz: 0
         w: 200, h: 600
 
-    console.log(personOne.dropOffPos);
-
     game = new GameObject
         x: 0, y: -500, z: 0
         vx: 0, vy: 0, vz: 0
@@ -124,6 +122,8 @@ app.add_module 'three_test', ->
             jean.hunger += 20
             console.log(jean.hunger)
 
+        ## Squirrel & toast
+        ###
         if toast != undefined
             directionToastEat = jean.intersect toast
             if ( directionEat != 'NONE' & !toast.isEaten)
@@ -132,6 +132,7 @@ app.add_module 'three_test', ->
                 scene.remove toast.mesh
                 jean.hunger += 20
                 console.log(jean.hunger)
+        ###
 
         #Person - squirrel collision
         directionCrash = jean.intersect personOne
@@ -151,7 +152,7 @@ app.add_module 'three_test', ->
         directionRatCrash = jean.intersect meanRat
         if ( directionRatCrash != 'NONE' && !jean.invincible)
             jean.hunger -= 20
-            console.log(jean.hunger)
+            #console.log(jean.hunger)
             jean.invincible = true
 
         if jean.invincible
@@ -160,20 +161,23 @@ app.add_module 'three_test', ->
         
         if countdown <= 0
             jean.invincible = false
-            console.log ('Not anymore:(')
+            #console.log ('Not anymore:(')
             countdown = 100
 
+        
         #Food dropping
-        #console.log(personOne.dropOffPos)
-        #console.log(personOne.position.x)
-        if (personOne.position.x == personOne.dropOffPos)
-            console.log('Im here!')
+        #console.log(personOne.getDropOffPos)
+        console.log(personOne.dropOffPos)
+        ###
+        if (personOne.x)
             toast = new Food
-                x: personOne.x, y:0, z:0
-                vx: 0, vy:0 , vz: 0
-                w: 50, h: 50
-            scene.add toast.mesh
+            x: personOne.position.x, y:0, z:0
+            vx: 0, vy:0 , vz: 0
+            w: 50, h: 50
+            scene.add(toast.mesh);
+        ###
 
+        #TWEEN.update()
 
         #Represent hunger level as the width of the hungerLevel object
         #hungerLevel.size.x = jean.hunger * 20
@@ -191,4 +195,4 @@ app.add_module 'three_test', ->
 
     do animate
 
-    { animate, scene, camera, jean, hungerLevel }
+    { animate, scene, camera, jean, personOne }
