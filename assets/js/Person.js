@@ -17,6 +17,7 @@ Person.prototype.constructor = Person;
 Person.prototype.dropOffPos = Math.random() * 300;
 Person.prototype.foodNumber = 3;//Math.floor(3*Math.random()+1);
 Person.prototype.state = 0;
+Person.prototype.started = false;
 
 
 
