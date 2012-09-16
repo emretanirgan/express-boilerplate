@@ -10,6 +10,15 @@ app.add_module 'three_test', ->
     #Test GameObject
 
     preLoadTextures()
+    eatting = document.createElement('audio')
+    eatting.setAttribute('src', 'img/eat.wav')
+    eatting.setAttribute('crossorigin', 'anonymous')
+    eatting.load();
+    intro = document.createElement('audio')
+    intro.setAttribute('src', 'img/intro.wav')
+    intro.setAttribute('crossorigin', 'anonymous')
+    intro.load()
+    intro.play()
     startButton = new THREE.Mesh(new THREE.PlaneGeometry(700,350,0,0), new THREE.MeshBasicMaterial({transparent:true}))
     startButton.position.set(375,-350,48)
     scene.add(startButton)
@@ -32,7 +41,7 @@ app.add_module 'three_test', ->
 
     Maxs = []
 
-    blue = (new THREE.Mesh(new THREE.PlaneGeometry(4000,4000,0,0), new THREE.MeshLambertMaterial({color:0x00FFFF})))
+    blue = (new THREE.Mesh(new THREE.PlaneGeometry(4000,4000,0,0), new THREE.MeshLambertMaterial({color:0x73C8EC,emissive:0x666666 })))
     blue.position.set(0,0,-500)
     scene.add(blue)
 
@@ -158,14 +167,16 @@ app.add_module 'three_test', ->
     light.position.z = 2000;
     scene.add(light);
 
-
+    ###
     geometry = new THREE.CubeGeometry 200, 200, 200
     material = new THREE.MeshBasicMaterial
         color: 0xFF6699 #0xff0000
         wireframe: true 
+
     
     mesh = new THREE.Mesh geometry, material
     scene.add mesh
+    ###
    
     renderer = new THREE.WebGLRenderer()
     renderer.setSize window.innerWidth, window.innerHeight
@@ -215,8 +226,13 @@ app.add_module 'three_test', ->
             if (!jean.startRemoved) 
                 scene.remove(startMenu)
                 scene.remove(black)
+                intro.pause()
             timer++
-            if (1 > Math.random()*450) 
+            divisor = Math.pow(timer,1/6)
+            if(divisor > 200) 
+                divsor = 200
+            
+            if (1 > Math.random()*450/divisor) 
                 hacker = Math.floor(Math.random()*3)
                 veloc = 3 + Math.random()
                 xPos = -1000 -200*Math.random()
@@ -274,9 +290,10 @@ app.add_module 'three_test', ->
 
                 
             
-
+            ###
             mesh.rotation.x += 0.01
             mesh.rotation.y += 0.02
+            ###
             
             #test intersection
             jean.intersected = false
@@ -300,6 +317,7 @@ app.add_module 'three_test', ->
                     nibbles.isEaten = true
                     scene.remove nibbles.mesh
                 else if ( directionEat != 'NONE' & !nibbles.isEaten)
+                    eatting.play()
                     nibbles.isEaten = true
                     scene.remove nibbles.mesh
                     jean.hunger += 5

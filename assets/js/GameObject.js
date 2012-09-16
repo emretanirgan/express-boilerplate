@@ -5,7 +5,7 @@ GameObject = function( params ) {
 	this.size = new THREE.Vector2 ( params.w, params.h );
 	this.bounds = new THREE.Vector4 ( params.x-params.w/2+20, params.y+params.h/2, params.x + params.w/2-20, params.y - params.h/2);
 	//var material = new THREE.MeshLambertMaterial ({ map : params.map, transparent : true });
-	var material = new THREE.MeshLambertMaterial ({transparent : true, side:THREE.DoubleSide });
+	var material = new THREE.MeshLambertMaterial ({transparent : true, side:THREE.DoubleSide,emissive:0x222222 });
 	if (params.map) {
 		material.map = params.map;
 		//debugger;
