@@ -5,11 +5,11 @@ Person = function( params ) {
 	if (this.velocity.x < 0) {
 		this.right = false;
 	}
-	//if(this.right){
+	if(this.right){
 		this.foodTime ={1:Math.floor(700*Math.random()),2:Math.floor(100*Math.random()),3:Math.floor(-700*Math.random())}
-	//} else {
-	//	this.foodTime ={1:Math.floor(-700*Math.random()),2:Math.floor(100*Math.random()),3:Math.floor(700*Math.random())}
-	//}
+	} else {
+		this.foodTime ={1:Math.floor(-700*Math.random()),2:Math.floor(100*Math.random()),3:Math.floor(700*Math.random())}
+	}
 }
 Person.prototype = clone(GameObject.prototype);
 Person.prototype.constructor = Person;
