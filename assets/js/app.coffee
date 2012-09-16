@@ -5,12 +5,26 @@ app.add_module 'three_test', ->
 
     scene = new THREE.Scene()
 
+    
+
     #Test GameObject
 
     preLoadTextures()
+    startButton = new THREE.Mesh(new THREE.PlaneGeometry(700,350,0,0), new THREE.MeshBasicMaterial({transparent:true}))
+    startButton.position.set(375,-350,48)
+    scene.add(startButton)
+
+    startMenu = new THREE.Mesh(new THREE.PlaneGeometry(1600,1200,0,0), new THREE.MeshLambertMaterial({map:Textures['start'].map}))
+    startMenu.position.set(0,0,50)
+    scene.add(startMenu)
+    black = new THREE.Mesh(new THREE.PlaneGeometry(3000,3000,0,0), new THREE.MeshBasicMaterial({color:0x000000}))
+    black.position.set(0,0,49)
+    scene.add(black)
     timer = 0
     countdown = 100
+    overMenu = new THREE.Mesh(new THREE.PlaneGeometry(1600,1200,0,0), new THREE.MeshLambertMaterial({map:Textures['over'].map}))
     people = []
+
     Theos = []
     
 
@@ -116,7 +130,6 @@ app.add_module 'three_test', ->
     for peeps in Maxs
         people.push(peeps)
 
-
     for plat in platforms 
         #if plat.mesh.material.map
         scene.add plat.mesh
@@ -193,261 +206,287 @@ app.add_module 'three_test', ->
         # note: three.js includes requestAnimationFrame shim
         requestAnimationFrame animate
 
-        timer++
-        
+
+        if (jean.started)
+            if (!jean.startRemoved) 
+                scene.remove(startMenu)
+                scene.remove(black)
+            timer++
+            if (1 > Math.random()*450) 
+                hacker = Math.floor(Math.random()*3)
+                veloc = 3 + Math.random()
+                xPos = -1000 -200*Math.random()
+                yPos = -200 - 100*Math.random()
+                if (Math.round(Math.random()) == 0)
+                    veloc*=-1
+                    xPos*=-1
+                if (hacker == 0)
+                    temp = new Person
+                        x: xPos, y:yPos, z: 0
+                        vx: veloc, vy: 0, vz: 0
+                        w: 600*.68133, h: 600
+                        map: Textures['theo1'].map
+                    Theos.push temp
+                    people.push temp
+                    scene.add(temp.mesh)
+                    console.log hacker
+                else if (hacker == 1)
+                    temp = new Person
+                        x: xPos, y:yPos, z: 0
+                        vx: veloc, vy: 0, vz: 0
+                        w: 600*.68133, h: 600
+                        map: Textures['emre1'].map
+                    Emres.push temp
+                    people.push temp
+                    scene.add(temp.mesh)
+                    console.log hacker
+                else if (hacker == 2) 
+                    temp =  new Person
+                        x: xPos, y:yPos, z: 0
+                        vx: veloc, vy: 0, vz: 0
+                        w: 600*.68133, h: 600
+                        map: Textures['max1'].map
+                    Maxs.push temp
+                    people.push temp
+                    scene.add(temp.mesh)
+                    console.log hacker
+
+            if (1 > Math.random()*900) 
+                veloc = 3 + Math.random()*2
+                xPos = -1700 - Math.random()*200
+                yPos = -450 - 150 * Math.random()
+                if (Math.round(Math.random()) == 0)
+                    veloc*=-1
+                    xPos*=-1
+
+                temp = new Rat
+                    x: xPos, y: yPos, z: 0
+                    vx: veloc, vy:0, vz:0
+                    w: 3.23272*100, h: 100
+                    map: Textures['rat'].map
+                rats.push temp
+                scene.add(temp.mesh)
             
-
-
-        if (1 > Math.random()*450) 
-            hacker = Math.floor(Math.random()*3)
-            veloc = 3 + Math.random()
-            xPos = -1000 -200*Math.random()
-            yPos = -200 - 100*Math.random()
-            if (Math.round(Math.random()) == 0)
-                veloc*=-1
-                xPos*=-1
-            if (hacker == 0)
-                temp = new Person
-                    x: xPos, y:yPos, z: 0
-                    vx: veloc, vy: 0, vz: 0
-                    w: 600*.68133, h: 600
-                    map: Textures['theo1'].map
-                Theos.push temp
-                people.push temp
-                scene.add(temp.mesh)
-                console.log hacker
-            else if (hacker == 1)
-                temp = new Person
-                    x: xPos, y:yPos, z: 0
-                    vx: veloc, vy: 0, vz: 0
-                    w: 600*.68133, h: 600
-                    map: Textures['emre1'].map
-                Emres.push temp
-                people.push temp
-                scene.add(temp.mesh)
-                console.log hacker
-            else if (hacker == 2) 
-                temp =  new Person
-                    x: xPos, y:yPos, z: 0
-                    vx: veloc, vy: 0, vz: 0
-                    w: 600*.68133, h: 600
-                    map: Textures['max1'].map
-                Maxs.push temp
-                people.push temp
-                scene.add(temp.mesh)
-                console.log hacker
-
-        if (1 > Math.random()*900) 
-            veloc = 3 + Math.random()*2
-            xPos = -1700 - Math.random()*200
-            yPos = -450 - 150 * Math.random()
-            if (Math.round(Math.random()) == 0)
-                veloc*=-1
-                xPos*=-1
-
-            temp = new Rat
-                x: xPos, y: yPos, z: 0
-                vx: veloc, vy:0, vz:0
-                w: 3.23272*100, h: 100
-                map: Textures['rat'].map
-            rats.push temp
-            scene.add(temp.mesh)
-        
-
-            
-        
-
-        mesh.rotation.x += 0.01
-        mesh.rotation.y += 0.02
-        
-        #test intersection
-        jean.intersected = false
-        for plat in platforms
-            direction = jean.intersectPlatform plat
-            if ( !plat.mesh.material.map)
-                if ( direction == 'DOWN' || direction == 'MIDDLE')
-                    jean.velocity.y = 0
-                    jean.intersected = true
-                    jean.setPosition plat.bounds.y
-                    jean.jumps = 0;
-        
-
-        
-
-        #The squirrel - eating interaction
-        for nibbles in foods
-            directionEat = jean.intersect nibbles
-            nibbles.mesh.material.opacity = (nibbles.time+600 - timer)/200
-            if timer - nibbles.time >600 
-                nibbles.isEaten = true
-                scene.remove nibbles.mesh
-            else if ( directionEat != 'NONE' & !nibbles.isEaten)
-                nibbles.isEaten = true
-                scene.remove nibbles.mesh
-                jean.hunger += 5
-                jean.points += 10;
-
-        #Person - squirrel collision
-        
-        for peeps in people
-            if Math.abs(peeps.position.x) > 2000
-                scene.remove(peeps.mesh)
-            directionCrash = jean.intersect peeps
-            if ( directionCrash != 'NONE' && !jean.invincible)
-                jean.hunger -= 20
-                jean.invincible = true
-                if ( jean.velocity.x>0)
-                    jean.moveLeft()
-                    jean.red = 1
-                else
-                    jean.moveRight()
-                    jean.red = 1
 
                 
-        #Rat - foods interaction
-        for meanRat in rats
-            if Math.abs(meanRat.position.x) > 2000
-                scene.remove(meanRat.mesh)
-            for bytes in foods
-                directionRatEat = meanRat.intersect bytes
-                if ( directionRatEat != 'NONE' & !bytes.isEaten)
-                  bytes.isEaten = true
-                  scene.remove bytes.mesh
-
-        #Rat - squirrel interaction
-
-        for meanRat in rats
-            directionRatCrash = jean.intersect meanRat
-            if ( directionRatCrash != 'NONE' && !jean.invincible)
-                jean.hunger -= 10
-                jean.invincible = true
-                if ( jean.velocity.x>0)
-                    jean.moveLeft()
-                    jean.red = 1
-                else
-                    jean.moveRight()
-                    jean.red = 1
-
-        if jean.invincible
-            countdown -= 1
-        
-        if countdown <= 0
-            jean.invincible = false
-            countdown = 100
-
-        #Food dropping
             
-        for peeps in people
-            dropNow = false
-            if (peeps.right)
-                dropNow = peeps.foodTime[peeps.foodNumber]<peeps.position.x
-            else 
-                dropNow = peeps.foodTime[peeps.foodNumber]>peeps.position.x
-            foodNum = Math.floor(Math.random()*5)
-            if (peeps.foodNumber>0 && dropNow)
-                yPos = -450 - 100*Math.random()
-                foodItem = new Food
-                    x: peeps.position.x, y:-400, z:0
-                    vx:0, vy:0, vz:0
-                    w:50, h:50
-                    map: FoodTextures[foodNum]
-                    time: timer
-                scene.add foodItem.mesh 
-                foods.push foodItem
-                peeps.foodNumber--
 
-        
+            mesh.rotation.x += 0.01
+            mesh.rotation.y += 0.02
+            
+            #test intersection
+            jean.intersected = false
+            for plat in platforms
+                direction = jean.intersectPlatform plat
+                if ( !plat.mesh.material.map)
+                    if ( direction == 'DOWN' || direction == 'MIDDLE')
+                        jean.velocity.y = 0
+                        jean.intersected = true
+                        jean.setPosition plat.bounds.y
+                        jean.jumps = 0;
+            
+
+            
+
+            #The squirrel - eating interaction
+            for nibbles in foods
+                directionEat = jean.intersect nibbles
+                nibbles.mesh.material.opacity = (nibbles.time+600 - timer)/200
+                if timer - nibbles.time >600 
+                    nibbles.isEaten = true
+                    scene.remove nibbles.mesh
+                else if ( directionEat != 'NONE' & !nibbles.isEaten)
+                    nibbles.isEaten = true
+                    scene.remove nibbles.mesh
+                    jean.hunger += 5
+                    jean.points += 10;
+
+            #Person - squirrel collision
+            
+            for peeps in people
+                if Math.abs(peeps.position.x) > 2000
+                    scene.remove(peeps.mesh)
+                directionCrash = jean.intersect peeps
+                if ( directionCrash != 'NONE' && !jean.invincible)
+                    jean.hunger -= 30
+                    jean.invincible = true
+                    if ( jean.velocity.x>0)
+                        jean.red = 1
+                    else
+                        jean.red = 1
+
+                    
+            #Rat - foods interaction
+            for meanRat in rats
+                if Math.abs(meanRat.position.x) > 2000
+                    scene.remove(meanRat.mesh)
+                for bytes in foods
+                    directionRatEat = meanRat.intersect bytes
+                    if ( directionRatEat != 'NONE' & !bytes.isEaten)
+                      bytes.isEaten = true
+                      scene.remove bytes.mesh
+
+            #Rat - squirrel interaction
+
+            for meanRat in rats
+                directionRatCrash = jean.intersect meanRat
+                if ( directionRatCrash != 'NONE' && !jean.invincible)
+                    jean.hunger -= 15
+                    jean.invincible = true
+                    if ( jean.velocity.x>0)
+                        jean.red = 1
+                    else
+                        jean.red = 1
+
+            if jean.invincible
+                countdown -= 1
+            
+            if countdown <= 0
+                jean.invincible = false
+                countdown = 100
+
+            #Food dropping
+                
+            for peeps in people
+                dropNow = false
+                if (peeps.right)
+                    dropNow = peeps.foodTime[peeps.foodNumber]<peeps.position.x
+                else 
+                    dropNow = peeps.foodTime[peeps.foodNumber]>peeps.position.x
+                foodNum = Math.floor(Math.random()*5)
+                if (peeps.foodNumber>0 && dropNow)
+                    yPos = -450 - 100*Math.random()
+                    foodItem = new Food
+                        x: peeps.position.x, y:-400, z:0
+                        vx:0, vy:0, vz:0
+                        w:50, h:50
+                        map: FoodTextures[foodNum]
+                        time: timer
+                    scene.add foodItem.mesh 
+                    foods.push foodItem
+                    peeps.foodNumber--
+
+            
 
 
-        
-        
+            
+            
 
 
-        #test objects moving
-        for plat in platforms 
-            do plat.move
+            #test objects moving
+            for plat in platforms 
+                do plat.move
 
-        for peeps in Theos
-            do peeps.move
-            peeps.state++
-            if (peeps.state%60 == 0)
-                peeps.mesh.material.map = TheoStates[0]
-            else if (peeps.state%60 == 15)
-                peeps.mesh.material.map = TheoStates[1]
-            else if (peeps.state%60 == 30)
-                peeps.mesh.material.map = TheoStates[2]
-            else if (peeps.state%60 == 45)
-                peeps.mesh.material.map = TheoStates[3]
+            for peeps in Theos
+                do peeps.move
+                peeps.state++
+                if (peeps.state%60 == 0)
+                    peeps.mesh.material.map = TheoStates[0]
+                else if (peeps.state%60 == 15)
+                    peeps.mesh.material.map = TheoStates[1]
+                else if (peeps.state%60 == 30)
+                    peeps.mesh.material.map = TheoStates[2]
+                else if (peeps.state%60 == 45)
+                    peeps.mesh.material.map = TheoStates[3]
 
-        for peeps in Emres
-            do peeps.move
-            peeps.state++
-            if (peeps.state%60 == 0)
-                peeps.mesh.material.map = EmreStates[0]
-            else if (peeps.state%60 == 15)
-                peeps.mesh.material.map = EmreStates[1]
-            else if (peeps.state%60 == 30)
-                peeps.mesh.material.map = EmreStates[2]
-            else if (peeps.state%60 == 45)
-                peeps.mesh.material.map = EmreStates[3]
+            for peeps in Emres
+                do peeps.move
+                peeps.state++
+                if (peeps.state%60 == 0)
+                    peeps.mesh.material.map = EmreStates[0]
+                else if (peeps.state%60 == 15)
+                    peeps.mesh.material.map = EmreStates[1]
+                else if (peeps.state%60 == 30)
+                    peeps.mesh.material.map = EmreStates[2]
+                else if (peeps.state%60 == 45)
+                    peeps.mesh.material.map = EmreStates[3]
 
-        for peeps in Maxs
-            do peeps.move
-            peeps.state++
-            if (peeps.state%60 == 0)
-                peeps.mesh.material.map = MaxStates[0]
-            else if (peeps.state%60 == 15)
-                peeps.mesh.material.map = MaxStates[1]
-            else if (peeps.state%60 == 30)
-                peeps.mesh.material.map = MaxStates[2]
-            else if (peeps.state%60 == 45)
-                peeps.mesh.material.map = MaxStates[3]
+            for peeps in Maxs
+                do peeps.move
+                peeps.state++
+                if (peeps.state%60 == 0)
+                    peeps.mesh.material.map = MaxStates[0]
+                else if (peeps.state%60 == 15)
+                    peeps.mesh.material.map = MaxStates[1]
+                else if (peeps.state%60 == 30)
+                    peeps.mesh.material.map = MaxStates[2]
+                else if (peeps.state%60 == 45)
+                    peeps.mesh.material.map = MaxStates[3]
 
-             
+                 
 
-        for rat in rats 
-            do rat.move
+            for rat in rats 
+                do rat.move
 
-        do jean.move
+            do jean.move
 
-        #Represent hunger level as the width of the hungerLevel object
-        #hungerLevel.size.x = jean.hunger * 20
-        #console.log(hungerLevel.size.x)
-        #console.log(jean.hunger)
+            #Represent hunger level as the width of the hungerLevel object
+            #hungerLevel.size.x = jean.hunger * 20
+            #console.log(hungerLevel.size.x)
+            #console.log(jean.hunger)
 
-        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-        canvasContext.fillText(jean.points, 15 ,40 )
-        canvasMat.map.needsUpdate = true
-        if (jean.hunger<=0) 
-            jean.lives--
-            scene.remove(livesLeft[jean.lives].mesh)
-            jean.hunger = 80
+            canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+            canvasContext.fillText(jean.points, 15 ,40 )
+            canvasMat.map.needsUpdate = true
+            if (jean.hunger<=0) 
+                jean.lives--
+                if (jean.lives <0)
+                    
+                    overMenu.position.set(0,0,51)
+                    scene.add(overMenu)
+                    camera.position.x = 0;
+                    camera.position.y=0;
+                    scene.add(black)
+                    jean.started = false;
+                    jean.red = 0;
+                    jean.lives = 3
+                    jean.points = 0
+                    timer = 0
+                    jean.setPosition(0)
+                    for life in livesLeft
+                        scene.add(life.mesh)
+                    for peeps in people
+                        scene.remove(peeps.mesh)
+                    for meanRat in rats
+                        scene.remove(meanRat.mesh)
+                    for bits in foods
+                        scene.remove(bits.mesh)
 
-        if (jean.hunger>80) 
-            jean.hunger = 80
+                    people = []
+                    rats = []
+                    foods = []
+                    Theos = []
+                    Emres = []
+                    Maxs = []
+                else
+                    scene.remove(livesLeft[jean.lives].mesh)
+                jean.hunger = 80
+
+            if (jean.hunger>80) 
+                jean.hunger = 80
 
 
-        jean.hunger-=.025
-        hungerBarContext.clearRect( 0,0,800 ,40 )
-        hungerBarContext.fillRect( 0,0,jean.hunger*10 ,40 )
-        hungerBarMat.map.needsUpdate = true
+            jean.hunger-=.025
+            hungerBarContext.clearRect( 0,0,800 ,40 )
+            hungerBarContext.fillRect( 0,0,jean.hunger*10 ,40 )
+            hungerBarMat.map.needsUpdate = true
 
-        if(jean.red>0) 
-            jean.red -=.02
-        jean.mesh.material.color.setRGB(1, 1-jean.red, 1-jean.red)
+            if(jean.red>0) 
+                jean.red -=.02
+            jean.mesh.material.color.setRGB(1, 1-jean.red, 1-jean.red)
 
-        camera.position.x += (jean.position.x/8- camera.position.x)*.05;
-        text.position.x = -750+camera.position.x;
-        hungerBarMesh.position.x = 650+camera.position.x;
-        livesLeft[0].mesh.position.x = -1050 + camera.position.x
-        livesLeft[1].mesh.position.x = -950 + camera.position.x
-        livesLeft[2].mesh.position.x = -850 + camera.position.x
-        camera.position.y += (jean.position.y/4- camera.position.y)*.02;
-        text.position.y = -580+camera.position.y;
-        hungerBarMesh.position.y = -580+camera.position.y;
-        livesLeft[0].mesh.position.y = -580 + camera.position.y
-        livesLeft[1].mesh.position.y = -580 + camera.position.y
-        livesLeft[2].mesh.position.y = -580 + camera.position.y
+            camera.position.x += (jean.position.x/8- camera.position.x)*.05;
+            text.position.x = -750+camera.position.x;
+            hungerBarMesh.position.x = 650+camera.position.x;
+            livesLeft[0].mesh.position.x = -1050 + camera.position.x
+            livesLeft[1].mesh.position.x = -950 + camera.position.x
+            livesLeft[2].mesh.position.x = -850 + camera.position.x
+            camera.position.y += (jean.position.y/4- camera.position.y)*.02;
+            text.position.y = -580+camera.position.y;
+            hungerBarMesh.position.y = -580+camera.position.y;
+            livesLeft[0].mesh.position.y = -580 + camera.position.y
+            livesLeft[1].mesh.position.y = -580 + camera.position.y
+            livesLeft[2].mesh.position.y = -580 + camera.position.y
 
         
 
@@ -455,4 +494,4 @@ app.add_module 'three_test', ->
 
     do animate
 
-    { animate, scene, camera, jean }
+    { animate, scene, camera, jean, startButton, overMenu}

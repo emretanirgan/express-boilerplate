@@ -20,7 +20,9 @@ Textures = {
 	'max1' : {src:'img/max1.png', map:undefined},
 	'max2' : {src:'img/max2.png', map:undefined},
 	'max3' : {src:'img/max3.png', map:undefined},
-	'max4' : {src:'img/max4.png', map:undefined}
+	'max4' : {src:'img/max4.png', map:undefined},
+	'start' : {src:'img/startmenu.png', map:undefined},
+	'over' : {src:'img/gameover.png', map:undefined}
 }
 
 preLoadTextures = function() {
