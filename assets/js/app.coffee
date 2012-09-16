@@ -48,10 +48,17 @@ app.add_module 'three_test', ->
         map: Textures['rat'].map
 
     foods = []
+    FoodTextures = []
+    FoodTextures.push(Textures['hotdog'].map)
+    FoodTextures.push(Textures['cheesesteak'].map)
+    FoodTextures.push(Textures['chicken'].map)
+    FoodTextures.push(Textures['toast'].map)
+    FoodTextures.push(Textures['pizza'].map)
 
 
     for plat in platforms 
-        scene.add plat.mesh
+        if plat.mesh.material.map
+            scene.add plat.mesh
 
     for peeps in people
         scene.add peeps.mesh
@@ -159,13 +166,13 @@ app.add_module 'three_test', ->
                 dropNow = peeps.foodTime[peeps.foodNumber]<peeps.position.x
             else 
                 dropNow = peeps.foodTime[peeps.foodNumber]>peeps.position.x
-            
+            foodNum = Math.floor(Math.random()*5)
             if (peeps.foodNumber>0 && dropNow)
                 foodItem = new Food
                     x: peeps.position.x, y:0, z:0
                     vx:0, vy:0, vz:0
                     w:50, h:50
-                    map: Textures['hotdog'].map
+                    map: FoodTextures[foodNum]
                 scene.add foodItem.mesh 
                 foods.push foodItem
                 peeps.foodNumber--
