@@ -1,1 +1,0 @@
-@app = add_module: (name, module) -> app[name] = module()
