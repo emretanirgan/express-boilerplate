@@ -10,25 +10,25 @@ app.add_module 'three_test', ->
     preLoadTextures()
 
     countdown = 100
-
-    personOne = new Person
+    people = []
+    people.push new Person
         x: -500, y:0, z: 0
         vx: 2, vy: 0, vz: 0
         w: 200, h: 600
 
-    console.log(personOne.dropOffPos);
+    platforms = []
 
-    game = new GameObject
+    platforms.push new GameObject
         x: 0, y: -500, z: 0
         vx: 0, vy: 0, vz: 0
         w: 3000, h: 500
 
-    platformOne = new GameObject
+    platforms.push new GameObject
         x: -1000, y: 450, z: 0
         vx: 0, vy:0, vz:0
         w: 400, h: 150
 
-    platformTwo = new GameObject
+    platforms.push new GameObject
         x: 700, y: 600, z: 0
         vx: 0, vy:0, vz:0
         w: 500, h: 150
@@ -39,31 +39,35 @@ app.add_module 'three_test', ->
         w: 200*1.42604501608, h: 200
         map: THREE.ImageUtils.loadTexture '/img/squirrelimg.png'
 
-    hotDog = new Food
-        x: 600, y:0, z:0
-        vx: 0, vy:0 , vz: 0
-        w: 2.0862*50, h: 50
-        map: Textures['hotdog'].map
 
-    hungerLevel = new GameObject
-        x: -1000, y: 700, z:0
-        vx: 0, vy:0, vz:0
-        w: jean.hunger * 20, h:60
-
-    meanRat = new Rat
-        x: -500, y: -50, z: 0
+    rats = []
+    rats.push new Rat
+        x: -2000, y: -50, z: 0
         vx: 5, vy:0, vz:0
         w: 3.23272*100, h: 100
         map: Textures['rat'].map
 
+    foods = []
+
+
+    for plat in platforms 
+        scene.add plat.mesh
+
+    for peeps in people
+        scene.add peeps.mesh
+
+    for rat in rats 
+        scene.add rat.mesh
+
+    ###
     scene.add game.mesh 
-    scene.add jean.mesh
+    
     scene.add personOne.mesh
     scene.add platformOne.mesh
     scene.add platformTwo.mesh
-    scene.add hotDog.mesh
-    scene.add hungerLevel.mesh
     scene.add meanRat.mesh
+    ###
+    scene.add jean.mesh
 
     light = new THREE.PointLight( 0xFFFFFF, 1, 0);
     light.position.z = 2000;
@@ -94,87 +98,73 @@ app.add_module 'three_test', ->
 
         mesh.rotation.x += 0.01
         mesh.rotation.y += 0.02
-
+        
         #test intersection
         jean.intersected = false
-        direction = jean.intersectPlatform game
-        if ( direction == 'DOWN' || direction == 'MIDDLE')
-            jean.velocity.y = 0
-            jean.intersected = true
-            jean.setPosition game.bounds.y
-            jean.jumps = 0;
+        for plat in platforms
+            direction = jean.intersectPlatform plat
+            if ( direction == 'DOWN' || direction == 'MIDDLE')
+                jean.velocity.y = 0
+                jean.intersected = true
+                jean.setPosition plat.bounds.y
+                jean.jumps = 0;
+        
 
-
-        directionPlatformOne = jean.intersectPlatform platformOne
-        if ( directionPlatformOne == 'DOWN' || directionPlatformOne == 'MIDDLE')
-            jean.velocity.y = 0
-            jean.intersected = true
-            jean.setPosition platformOne.bounds.y
-            jean.jumps = 0;
-
-        directionPlatformTwo = jean.intersectPlatform platformTwo
-        if ( directionPlatformTwo == 'DOWN' || directionPlatformTwo == 'MIDDLE')
-            jean.velocity.y = 0
-            jean.intersected = true
-            jean.setPosition platformTwo.bounds.y
-            jean.jumps = 0;
+        
 
         #The squirrel - eating interaction
-        directionEat = jean.intersect hotDog
-        if ( directionEat != 'NONE' & !hotDog.isEaten)
-            #console.log(directionEat)
-            hotDog.isEaten = true
-            scene.remove hotDog.mesh
-            jean.hunger += 20
-            console.log(jean.hunger)
-
-        if toast != undefined
-            directionToastEat = jean.intersect toast
-            if ( directionEat != 'NONE' & !toast.isEaten)
-                #console.log(directionEat)
-                toast.isEaten = true
-                scene.remove toast.mesh
+        for nibbles in foods
+            directionEat = jean.intersect nibbles
+            if ( directionEat != 'NONE' & !nibbles.isEaten)
+                nibbles.isEaten = true
+                scene.remove nibbles.mesh
                 jean.hunger += 20
-                console.log(jean.hunger)
 
         #Person - squirrel collision
-        directionCrash = jean.intersect personOne
-
-        if ( directionCrash != 'NONE' && !jean.invincible)
-            jean.hunger -= 50
-            console.log(jean.hunger)
-            jean.invincible = true
+        
+        for peeps in people
+            directionCrash = jean.intersect peeps
+            if ( directionCrash != 'NONE' && !jean.invincible)
+                jean.hunger -= 50
+                jean.invincible = true
                 
-        #Rat - food interaction
-        directionRatEat = meanRat.intersect hotDog
-        if ( directionRatEat != 'NONE' & !hotDog.isEaten)
-            hotDog.isEaten = true
-            scene.remove hotDog.mesh
+        #Rat - foods interaction
+        for meanRat in rats
+            for bytes in foods
+                directionRatEat = meanRat.intersect bytes
+                if ( directionRatEat != 'NONE' & !bytes.isEaten)
+                  bytes.isEaten = true
+                  scene.remove bytes.mesh
 
         #Rat - squirrel interaction
-        directionRatCrash = jean.intersect meanRat
-        if ( directionRatCrash != 'NONE' && !jean.invincible)
-            jean.hunger -= 20
-            console.log(jean.hunger)
-            jean.invincible = true
+
+        for meanRat in rats
+            directionRatCrash = jean.intersect meanRat
+            if ( directionRatCrash != 'NONE' && !jean.invincible)
+                jean.hunger -= 20
+                jean.invincible = true
 
         if jean.invincible
             countdown -= 1
-            #console.log('I am invincible!')
         
         if countdown <= 0
             jean.invincible = false
-            console.log ('Not anymore:(')
             countdown = 100
 
         #Food dropping
-        if (personOne.dropOffPos = personOne.position.x)
-            console.log('Im here!')
-            toast = new Food
-                x: personOne.x, y:0, z:0
-                vx: 0, vy:0 , vz: 0
-                w: 50, h: 50
-            scene.add toast.mesh
+            
+        for peeps in people
+            if (peeps.foodNumber>0 && peeps.foodTime[peeps.foodNumber]<peeps.position.x)
+                foodItem = new Food
+                    x: peeps.position.x, y:0, z:0
+                    vx:0, vy:0, vz:0
+                    w:50, h:50
+                    map: Textures['hotdog'].map
+                scene.add foodItem.mesh 
+                foods.push foodItem
+                peeps.foodNumber--
+
+        
 
 
         #Represent hunger level as the width of the hungerLevel object
@@ -184,13 +174,21 @@ app.add_module 'three_test', ->
 
 
         #test objects moving
-        do game.move
+        for plat in platforms 
+            do plat.move
+
+        for peeps in people
+            do peeps.move
+
+        for rat in rats 
+            do rat.move
+
         do jean.move
-        do personOne.move
-        do meanRat.move
+
+        
 
         renderer.render scene, camera
 
     do animate
 
-    { animate, scene, camera, jean, hungerLevel }
+    { animate, scene, camera, jean }
