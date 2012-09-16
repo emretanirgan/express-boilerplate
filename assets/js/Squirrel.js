@@ -10,6 +10,7 @@ Squirrel.prototype.invincible = false;
 Squirrel.prototype.hunger = 80;
 Squirrel.prototype.lives = 3;
 Squirrel.prototype.points = 0;
+Squirrel.prototype.red = 0;
 
 Squirrel.prototype.intersected = false;
 Squirrel.prototype.jumps = 0;

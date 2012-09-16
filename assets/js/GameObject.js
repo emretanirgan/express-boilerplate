@@ -3,13 +3,11 @@ GameObject = function( params ) {
 	this.position = new THREE.Vector3 ( params.x, params.y, params.z );
 	this.velocity = new THREE.Vector3 ( params.vx, params.vy, params.vz );
 	this.size = new THREE.Vector2 ( params.w, params.h );
-	this.bounds = new THREE.Vector4 ( params.x-params.w/2, params.y+params.h/2, params.x + params.w/2, params.y - params.h/2);
+	this.bounds = new THREE.Vector4 ( params.x-params.w/2+20, params.y+params.h/2, params.x + params.w/2-20, params.y - params.h/2);
 	//var material = new THREE.MeshLambertMaterial ({ map : params.map, transparent : true });
-	var material = new THREE.MeshLambertMaterial ({color:0xFF0000, transparent : true, side:THREE.DoubleSide });
+	var material = new THREE.MeshLambertMaterial ({transparent : true, side:THREE.DoubleSide });
 	if (params.map) {
 		material.map = params.map;
-		material.color.setHex(0xFFFFFF);
-		console.log('mapped');
 		//debugger;
 	} 
 	var geom = new THREE.PlaneGeometry ( params.w, params.h,0,0 );

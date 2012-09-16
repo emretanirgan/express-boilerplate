@@ -21,30 +21,35 @@ app.add_module 'three_test', ->
     platforms = []
 
     platforms.push new GameObject
-        x: 0, y: -800, z: 0
+        x: 0, y: -800, z: -70000
         vx: 0, vy: 0, vz: 0
         w: 3000, h: 500
 
     platforms.push new GameObject
-        x: 0, y: 200, z: 0
+        x: 0, y: 200, z: -10
         vx: 0, vy: 0, vz: 0
-        w: 1500*1.6668, h: 1500
+        w: 1700*1.6668, h: 1700
         map: Textures['background'].map
     platforms.push new GameObject
-        x: 0, y: 200, z: -500
+        x: 0, y: 400, z: -400
         vx: 0, vy: 0, vz: 0
-        w: 1500*2.7347, h: 1500
+        w: 1300*2.7347, h: 1300
         map: Textures['collegehall'].map
 
     platforms.push new GameObject
-        x: -700, y: 200, z: 0
+        x: -725, y: 200, z: -800
         vx: 0, vy:0, vz:0
         w: 300, h: 150
 
     platforms.push new GameObject
-        x: 600, y: 150, z: 0
+        x: 675, y: 150, z: -500
         vx: 0, vy:0, vz:0
         w: 300, h: 150
+
+    platforms.push new GameObject
+        x: -75, y: 575, z: -600
+        vx: 0, vy: 0, vz: 0
+        w: 25, h: 100
 
     jean = new Squirrel
         x: 0, y: 500, z: 0
@@ -197,12 +202,13 @@ app.add_module 'three_test', ->
             hacker = Math.floor(Math.random()*3)
             veloc = 3 + Math.random()
             xPos = -1000 -200*Math.random()
+            yPos = -200 - 100*Math.random()
             if (Math.round(Math.random()) == 0)
                 veloc*=-1
                 xPos*=-1
             if (hacker == 0)
                 temp = new Person
-                    x: xPos, y:0, z: 0
+                    x: xPos, y:yPos, z: 0
                     vx: veloc, vy: 0, vz: 0
                     w: 600*.68133, h: 600
                     map: Textures['theo1'].map
@@ -212,7 +218,7 @@ app.add_module 'three_test', ->
                 console.log hacker
             else if (hacker == 1)
                 temp = new Person
-                    x: xPos, y:0, z: 0
+                    x: xPos, y:yPos, z: 0
                     vx: veloc, vy: 0, vz: 0
                     w: 600*.68133, h: 600
                     map: Textures['emre1'].map
@@ -222,7 +228,7 @@ app.add_module 'three_test', ->
                 console.log hacker
             else if (hacker == 2) 
                 temp =  new Person
-                    x: xPos, y:0, z: 0
+                    x: xPos, y:yPos, z: 0
                     vx: veloc, vy: 0, vz: 0
                     w: 600*.68133, h: 600
                     map: Textures['max1'].map
@@ -233,13 +239,14 @@ app.add_module 'three_test', ->
 
         if (1 > Math.random()*900) 
             veloc = 3 + Math.random()*2
-            xPos = -2000 - Math.random()*200
+            xPos = -1700 - Math.random()*200
+            yPos = -450 - 150 * Math.random()
             if (Math.round(Math.random()) == 0)
                 veloc*=-1
                 xPos*=-1
 
             temp = new Rat
-                x: xPos, y: -50, z: 0
+                x: xPos, y: yPos, z: 0
                 vx: veloc, vy:0, vz:0
                 w: 3.23272*100, h: 100
                 map: Textures['rat'].map
@@ -270,7 +277,11 @@ app.add_module 'three_test', ->
         #The squirrel - eating interaction
         for nibbles in foods
             directionEat = jean.intersect nibbles
-            if ( directionEat != 'NONE' & !nibbles.isEaten)
+            nibbles.mesh.material.opacity = (nibbles.time+600 - timer)/200
+            if timer - nibbles.time >600 
+                nibbles.isEaten = true
+                scene.remove nibbles.mesh
+            else if ( directionEat != 'NONE' & !nibbles.isEaten)
                 nibbles.isEaten = true
                 scene.remove nibbles.mesh
                 jean.hunger += 5
@@ -285,6 +296,13 @@ app.add_module 'three_test', ->
             if ( directionCrash != 'NONE' && !jean.invincible)
                 jean.hunger -= 20
                 jean.invincible = true
+                if ( jean.velocity.x>0)
+                    jean.moveLeft()
+                    jean.red = 1
+                else
+                    jean.moveRight()
+                    jean.red = 1
+
                 
         #Rat - foods interaction
         for meanRat in rats
@@ -303,6 +321,12 @@ app.add_module 'three_test', ->
             if ( directionRatCrash != 'NONE' && !jean.invincible)
                 jean.hunger -= 10
                 jean.invincible = true
+                if ( jean.velocity.x>0)
+                    jean.moveLeft()
+                    jean.red = 1
+                else
+                    jean.moveRight()
+                    jean.red = 1
 
         if jean.invincible
             countdown -= 1
@@ -321,11 +345,13 @@ app.add_module 'three_test', ->
                 dropNow = peeps.foodTime[peeps.foodNumber]>peeps.position.x
             foodNum = Math.floor(Math.random()*5)
             if (peeps.foodNumber>0 && dropNow)
+                yPos = -450 - 100*Math.random()
                 foodItem = new Food
-                    x: peeps.position.x, y:0, z:0
+                    x: peeps.position.x, y:-400, z:0
                     vx:0, vy:0, vz:0
                     w:50, h:50
                     map: FoodTextures[foodNum]
+                    time: timer
                 scene.add foodItem.mesh 
                 foods.push foodItem
                 peeps.foodNumber--
@@ -406,13 +432,17 @@ app.add_module 'three_test', ->
         hungerBarContext.fillRect( 0,0,jean.hunger*10 ,40 )
         hungerBarMat.map.needsUpdate = true
 
-        camera.position.x += (jean.position.x/10- camera.position.x)*.05;
+        if(jean.red>0) 
+            jean.red -=.02
+        jean.mesh.material.color.setRGB(1, 1-jean.red, 1-jean.red)
+
+        camera.position.x += (jean.position.x/8- camera.position.x)*.05;
         text.position.x = -750+camera.position.x;
         hungerBarMesh.position.x = 650+camera.position.x;
         livesLeft[0].mesh.position.x = -1050 + camera.position.x
         livesLeft[1].mesh.position.x = -950 + camera.position.x
         livesLeft[2].mesh.position.x = -850 + camera.position.x
-        camera.position.y += (jean.position.y/15- camera.position.y)*.01;
+        camera.position.y += (jean.position.y/4- camera.position.y)*.02;
         text.position.y = -580+camera.position.y;
         hungerBarMesh.position.y = -580+camera.position.y;
         livesLeft[0].mesh.position.y = -580 + camera.position.y
