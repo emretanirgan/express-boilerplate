@@ -32,10 +32,14 @@ app.add_module 'three_test', ->
 
     Maxs = []
 
+    blue = (new THREE.Mesh(new THREE.PlaneGeometry(4000,4000,0,0), new THREE.MeshLambertMaterial({color:0x00FFFF})))
+    blue.position.set(0,0,-500)
+    scene.add(blue)
+
     platforms = []
 
     platforms.push new GameObject
-        x: 0, y: -800, z: -70000
+        x: 0, y: -950, z: -70000
         vx: 0, vy: 0, vz: 0
         w: 3000, h: 500
 
@@ -216,13 +220,13 @@ app.add_module 'three_test', ->
                 hacker = Math.floor(Math.random()*3)
                 veloc = 3 + Math.random()
                 xPos = -1000 -200*Math.random()
-                yPos = -350 - 100*Math.random()
+                yPos = -400 - 100*Math.random()
                 if (Math.round(Math.random()) == 0)
                     veloc*=-1
                     xPos*=-1
                 if (hacker == 0)
                     temp = new Person
-                        x: xPos, y:yPos, z: 0
+                        x: xPos, y:yPos, z: 4
                         vx: veloc, vy: 0, vz: 0
                         w: 600*.68133, h: 600
                         map: Textures['theo1'].map
@@ -232,7 +236,7 @@ app.add_module 'three_test', ->
                     console.log hacker
                 else if (hacker == 1)
                     temp = new Person
-                        x: xPos, y:yPos, z: 0
+                        x: xPos, y:yPos, z: 4
                         vx: veloc, vy: 0, vz: 0
                         w: 600*.68133, h: 600
                         map: Textures['emre1'].map
@@ -242,7 +246,7 @@ app.add_module 'three_test', ->
                     console.log hacker
                 else if (hacker == 2) 
                     temp =  new Person
-                        x: xPos, y:yPos, z: 0
+                        x: xPos, y:yPos, z: 4
                         vx: veloc, vy: 0, vz: 0
                         w: 600*.68133, h: 600
                         map: Textures['max1'].map
@@ -254,13 +258,13 @@ app.add_module 'three_test', ->
             if (1 > Math.random()*900) 
                 veloc = 3 + Math.random()*2
                 xPos = -1700 - Math.random()*200
-                yPos = -500 - 150 * Math.random()
+                yPos = -600 - 150 * Math.random()
                 if (Math.round(Math.random()) == 0)
                     veloc*=-1
                     xPos*=-1
 
                 temp = new Rat
-                    x: xPos, y: yPos, z: 0
+                    x: xPos, y: yPos, z: 6
                     vx: veloc, vy:0, vz:0
                     w: 3.23272*100, h: 100
                     map: Textures['rat'].map
@@ -355,9 +359,9 @@ app.add_module 'three_test', ->
                     dropNow = peeps.foodTime[peeps.foodNumber]>peeps.position.x
                 foodNum = Math.floor(Math.random()*5)
                 if (peeps.foodNumber>0 && dropNow)
-                    yPos = -450 - 100*Math.random()
+                    yPos = -600 - 100*Math.random()
                     foodItem = new Food
-                        x: peeps.position.x, y:-550, z:0
+                        x: peeps.position.x, y:-550, z: 2
                         vx:0, vy:0, vz:0
                         w:50, h:50
                         map: FoodTextures[foodNum]
@@ -475,7 +479,7 @@ app.add_module 'three_test', ->
                 jean.red -=.02
             jean.mesh.material.color.setRGB(1, 1-jean.red, 1-jean.red)
 
-            camera.position.x += (jean.position.x/8- camera.position.x)*.05;
+            camera.position.x += (jean.position.x/16- camera.position.x)*.05;
             text.position.x = -750+camera.position.x;
             hungerBarMesh.position.x = 650+camera.position.x;
             livesLeft[0].mesh.position.x = -1050 + camera.position.x
