@@ -40,33 +40,33 @@ app.add_module 'three_test', ->
         w: 3000, h: 500
 
     platforms.push new GameObject
-        x: 0, y: 200, z: -10
+        x: 0, y: 0, z: -10
         vx: 0, vy: 0, vz: 0
         w: 1700*1.6668, h: 1700
         map: Textures['background'].map
     platforms.push new GameObject
-        x: 0, y: 400, z: -400
+        x: 0, y: 150, z: -400
         vx: 0, vy: 0, vz: 0
-        w: 1300*2.7347, h: 1300
+        w: 1300*2.7347, h: 1400
         map: Textures['collegehall'].map
 
     platforms.push new GameObject
-        x: -725, y: 200, z: -800
+        x: -725, y: 0, z: -800
         vx: 0, vy:0, vz:0
         w: 300, h: 150
 
     platforms.push new GameObject
-        x: 675, y: 150, z: -500
+        x: 675, y: -50, z: -500
         vx: 0, vy:0, vz:0
         w: 300, h: 150
 
     platforms.push new GameObject
-        x: -75, y: 575, z: -600
+        x: -75, y: 375, z: -600
         vx: 0, vy: 0, vz: 0
         w: 25, h: 100
 
     jean = new Squirrel
-        x: 0, y: 500, z: 0
+        x: 0, y: 350, z: 0
         vx: 0, vy: 0, vz: 0
         w: 200*1.42604501608, h: 200
         map: THREE.ImageUtils.loadTexture '/img/squirrelimg.png'
@@ -216,7 +216,7 @@ app.add_module 'three_test', ->
                 hacker = Math.floor(Math.random()*3)
                 veloc = 3 + Math.random()
                 xPos = -1000 -200*Math.random()
-                yPos = -200 - 100*Math.random()
+                yPos = -350 - 100*Math.random()
                 if (Math.round(Math.random()) == 0)
                     veloc*=-1
                     xPos*=-1
@@ -254,7 +254,7 @@ app.add_module 'three_test', ->
             if (1 > Math.random()*900) 
                 veloc = 3 + Math.random()*2
                 xPos = -1700 - Math.random()*200
-                yPos = -450 - 150 * Math.random()
+                yPos = -500 - 150 * Math.random()
                 if (Math.round(Math.random()) == 0)
                     veloc*=-1
                     xPos*=-1
@@ -357,7 +357,7 @@ app.add_module 'three_test', ->
                 if (peeps.foodNumber>0 && dropNow)
                     yPos = -450 - 100*Math.random()
                     foodItem = new Food
-                        x: peeps.position.x, y:-400, z:0
+                        x: peeps.position.x, y:-550, z:0
                         vx:0, vy:0, vz:0
                         w:50, h:50
                         map: FoodTextures[foodNum]
