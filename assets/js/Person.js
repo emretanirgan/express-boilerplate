@@ -17,10 +17,7 @@ Person.prototype.constructor = Person;
 Person.prototype.dropOffPos = Math.random() * 300;
 Person.prototype.foodNumber = 3;//Math.floor(3*Math.random()+1);
 Person.prototype.state = 0;
-Person.prototype.maps = {'0':Textures['theo1'].map,
-						'1':Textures['theo2'].map,
-						'2':Textures['theo3'].map,
-						'3':Textures['theo4'].map,}
+
 
 
 /*Person.prototype.dropFood = function () {

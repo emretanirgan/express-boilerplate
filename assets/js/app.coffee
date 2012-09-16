@@ -11,11 +11,26 @@ app.add_module 'three_test', ->
 
     countdown = 100
     people = []
-    people.push new Person
+    Theos = []
+    Theos.push new Person
         x: 500, y:0, z: 0
-        vx: -2, vy: 0, vz: 0
+        vx: -4, vy: 0, vz: 0
         w: 600*.68133, h: 600
         map: Textures['theo1'].map
+
+    Emres = []
+    Emres.push new Person
+        x: -750, y:0, z: 0
+        vx: 4, vy: 0, vz: 0
+        w: 600*.68133, h: 600
+        map: Textures['emre1'].map
+
+    Maxs = []
+    Maxs.push new Person
+        x: -1500, y:0, z: 0
+        vx: 4, vy: 0, vz: 0
+        w: 600*.68133, h: 600
+        map: Textures['max1'].map
 
     platforms = []
 
@@ -66,6 +81,31 @@ app.add_module 'three_test', ->
     FoodTextures.push(Textures['chicken'].map)
     FoodTextures.push(Textures['toast'].map)
     FoodTextures.push(Textures['pizza'].map)
+
+    TheoStates = []
+    TheoStates.push(Textures['theo1'].map)
+    TheoStates.push(Textures['theo2'].map)
+    TheoStates.push(Textures['theo3'].map)
+    TheoStates.push(Textures['theo4'].map)
+    
+    EmreStates = []
+    EmreStates.push(Textures['emre1'].map)
+    EmreStates.push(Textures['emre2'].map)
+    EmreStates.push(Textures['emre3'].map)
+    EmreStates.push(Textures['emre4'].map)
+    
+    MaxStates = []
+    MaxStates.push(Textures['max1'].map)
+    MaxStates.push(Textures['max2'].map)
+    MaxStates.push(Textures['max3'].map)
+    MaxStates.push(Textures['max4'].map)
+
+    for peeps in Theos
+        people.push(peeps)
+    for peeps in Emres
+        people.push(peeps)
+    for peeps in Maxs
+        people.push(peeps)
 
 
     for plat in platforms 
@@ -203,17 +243,41 @@ app.add_module 'three_test', ->
         for plat in platforms 
             do plat.move
 
-        for peeps in people
+        for peeps in Theos
             do peeps.move
             peeps.state++
-            if (peeps.state%60 == 0) 
-                peeps.mesh.material.map = peeps.maps['0']
+            if (peeps.state%60 == 0)
+                peeps.mesh.material.map = TheoStates[0]
             else if (peeps.state%60 == 15)
-                peeps.mesh.material.map = peeps.maps['1']
+                peeps.mesh.material.map = TheoStates[1]
             else if (peeps.state%60 == 30)
-                peeps.mesh.material.map = peeps.maps['2']
+                peeps.mesh.material.map = TheoStates[2]
             else if (peeps.state%60 == 45)
-                peeps.mesh.material.map = peeps.maps['3']
+                peeps.mesh.material.map = TheoStates[3]
+
+        for peeps in Emres
+            do peeps.move
+            peeps.state++
+            if (peeps.state%60 == 0)
+                peeps.mesh.material.map = EmreStates[0]
+            else if (peeps.state%60 == 15)
+                peeps.mesh.material.map = EmreStates[1]
+            else if (peeps.state%60 == 30)
+                peeps.mesh.material.map = EmreStates[2]
+            else if (peeps.state%60 == 45)
+                peeps.mesh.material.map = EmreStates[3]
+
+        for peeps in Maxs
+            do peeps.move
+            peeps.state++
+            if (peeps.state%60 == 0)
+                peeps.mesh.material.map = MaxStates[0]
+            else if (peeps.state%60 == 15)
+                peeps.mesh.material.map = MaxStates[1]
+            else if (peeps.state%60 == 30)
+                peeps.mesh.material.map = MaxStates[2]
+            else if (peeps.state%60 == 45)
+                peeps.mesh.material.map = MaxStates[3]
 
              
 
