@@ -7,14 +7,11 @@ Squirrel.prototype = clone(GameObject.prototype);
 Squirrel.prototype.constructor = Squirrel;
 
 Squirrel.prototype.invincible = false;
-Squirrel.prototype.hunger = 50;
+Squirrel.prototype.hunger = 80;
 Squirrel.prototype.lives = 3;
-<<<<<<< HEAD
-=======
 Squirrel.prototype.points = 0;
 Squirrel.prototype.red = 0;
 
->>>>>>> 83260e51ed49146c27396f624af1266bfb9fbc40
 Squirrel.prototype.intersected = false;
 Squirrel.prototype.jumps = 0;
 Squirrel.prototype.switchedMap = true;
